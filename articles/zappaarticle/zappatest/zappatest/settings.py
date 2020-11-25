@@ -25,7 +25,7 @@ SECRET_KEY = '$$1)u1g*0mbyj2m04798u+s5z^xgnk!rodidaz-8cy73!f6)zn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [https://h76ave6fn0.execute-api.us-east-2.amazonaws.com/]
+ALLOWED_HOSTS = ['h76ave6fn0.execute-api.us-east-2.amazonaws.com',]
 
 
 # Application definition
@@ -37,7 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_s3_storage',
 ]
+
+S3_BUCKET_NAME = "zappatest-static-files"
+
+STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
+AWS_S3_BUCKET_NAME_STATIC = S3_BUCKET_NAME
+
+# These next two lines will serve the static files directly 
+# from the s3 bucket
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % S3_BUCKET_NAME
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+
+# OR...if you create a fancy custom domain for your static files use:
+#AWS_S3_PUBLIC_URL_STATIC = "https://static.yourdomain.com/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
